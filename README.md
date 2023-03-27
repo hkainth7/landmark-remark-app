@@ -1,6 +1,12 @@
 # landmark-remark-app
 
- Landmark remark app allows you to select a point on the map and attach a remark to the selected coordinates. The remarks are saved in the Firebase Firestore dB and then retrieved and displayed as a list. Users are able to view remarks created by other users. 
+ Landmark remark app allows you to select a point on the map and attach a remark to the selected coordinates. The remarks are saved in the Firebase Firestore dB and then retrieved and displayed as a list. Users are able to view remarks created by other users.
+ 
+ # Steps to run app
+ 
+ 1. Clone Repo
+ 2. In project directory run ```node npm install ``` to install project dependencies 
+ 3. Run ```node npm start ``` to start the app
 
  Technologies used:
 
