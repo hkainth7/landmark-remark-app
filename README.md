@@ -5,8 +5,8 @@
  # Steps to run app
  
  1. Clone Repo
- 2. In project directory run ```node npm install ``` to install project dependencies 
- 3. Run ```node npm start ``` to start the app
+ 2. In project directory run ``` npm install ``` to install project dependencies 
+ 3. Run ``` npm start ``` to start the app
 
  Technologies used:
 
