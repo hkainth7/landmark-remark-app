@@ -4,14 +4,15 @@
 
  Technologies used:
 
- React
- React-map-gl / mapbox-gl -> implementation time **45mins**
- Firebase Firestore -> implementation time **1.5hr**
- Firebase Authentication -> implementation time **1.5hr** 
- Styled Components -> **1hr** -> I contemplated using Tailwind. I like Tailwind's approach to using a mobile first approach. I opted for Styled Components because usage and implementation is easier 
- Research/reading docs/youtube videos/referencing school material -> **4hr** 
- Refactoring Code - **2hr**
- Debugging - **2hr**
+ - React
+ - React-router-dom
+ - React-map-gl / mapbox-gl -> implementation time **45mins**
+ - Firebase Firestore -> implementation time **1.5hr**
+ - Firebase Authentication -> implementation time **1.5hr** 
+ - Styled Components -> **1hr** -> I contemplated using Tailwind. I like Tailwind's approach to using a mobile first approach. I opted for Styled components because usage and implementation is easier 
+ - Research/reading docs/youtube videos/referencing school material -> **4hr** 
+ - Refactoring Code - **2hr**
+ - Debugging - **2hr**
 
  Bugs/Missing functionality/things I want to improve:
 
@@ -25,6 +26,7 @@
  8. I could have put in more time in to the styling of the app
  9. I can do better at breaking down the UI into smaller components 
  10. I did not create environment variables -> Super important to do so but I will shut down the dB and auth portal in a couple weeks time anyways.
+ 11. Could have implemented global state management with Redux or my preferred Zustand
 
  Things I learnt and hope to learn:
 
