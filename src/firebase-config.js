@@ -3,7 +3,7 @@ import {getFirestore} from 'firebase/firestore';
 import {getAuth} from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDNvnsqx7tKbp9kI3RRQuBSRcTPacj9hlY",
+  apiKey: "AIzaSyDNvnsqx7tKbp9kI3RRQuBSRcTPacj9hlY", 
   authDomain: "landmark-remark-app-59fa6.firebaseapp.com",
   projectId: "landmark-remark-app-59fa6",
   storageBucket: "landmark-remark-app-59fa6.appspot.com",
