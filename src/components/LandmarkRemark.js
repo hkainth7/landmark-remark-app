@@ -81,7 +81,7 @@ function LandmarkRemark() {
   
       getNotes();
   
-    },[]);
+    },[notesCollectionRef]);
 
   return (
     <Container>
