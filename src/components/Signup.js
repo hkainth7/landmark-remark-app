@@ -52,25 +52,43 @@ const Button = styled.button`
     }
 `;
 
+const ErrorMessage = styled.p`
+    margin: 0;
+    font-size: 16px;
+`;
+
 export default function Signup(){
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [emailError, setEmailError] = useState("");
+    const [pwdError, setPwdError] = useState("");
+    const [successMsg, setSuccessMessage] = useState("")
 
+    const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
+    
     const {signUp} = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            setLoading(true);
-            await signUp(email, password);
-            setEmail("");
-            setPassword("");
-        } catch (error) {
-            console.log(error.message);
+
+        if(!validEmail.test(email)){
+            setEmailError("Please enter a valid email address");
+        }else if(password.length < 6){
+            setPwdError("Please enter a password longer than 5 characters");
+        }else{
+            try {
+                setLoading(true);
+                await signUp(email, password);
+            } catch (error) {
+                console.log(error.message);
+            }
+            setLoading(false);
+            setEmailError("");
+            setPwdError("");
+            setSuccessMessage("Account successfully created. Please login");
         }
-        setLoading(false);
         
     }
 
@@ -81,6 +99,9 @@ export default function Signup(){
                 <Input type="text" placeholder='email' onChange={(e) => setEmail(e.target.value)} required />
                 <Input type="password" placeholder='password' onChange={(e) => setPassword(e.target.value)} required />
                 <Button disabled={loading}>Sign Up</Button>
+                {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
+                {pwdError && <ErrorMessage>{pwdError}</ErrorMessage>}
+                {successMsg && <p>{successMsg}</p>}
             </Form>
             <div>
                 Already have an account? <Link to="/">Login</Link>

@@ -3,12 +3,12 @@ import {getFirestore} from 'firebase/firestore';
 import {getAuth} from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDNvnsqx7tKbp9kI3RRQuBSRcTPacj9hlY", 
-  authDomain: "landmark-remark-app-59fa6.firebaseapp.com",
-  projectId: "landmark-remark-app-59fa6",
-  storageBucket: "landmark-remark-app-59fa6.appspot.com",
-  messagingSenderId: "933740858577",
-  appId: "1:933740858577:web:4659140486c8d0bf3f49f0"
+  apiKey: "AIzaSyBo1aE8xEGyMk8KskGksR3WSvQM-i-2Jtw",
+  authDomain: "landmark-remark-app-v2.firebaseapp.com",
+  projectId: "landmark-remark-app-v2",
+  storageBucket: "landmark-remark-app-v2.appspot.com",
+  messagingSenderId: "368172446130",
+  appId: "1:368172446130:web:94b4c8a1726b70dd4c34ab"
 };
 
   const app = initializeApp(firebaseConfig);

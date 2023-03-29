@@ -1,13 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Map, {Marker, NavigationControl, GeolocateControl, FullscreenControl, Popup} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 function MapBox({setNewLong, setNewLat, notes}) {
 
@@ -33,12 +26,14 @@ function MapBox({setNewLong, setNewLat, notes}) {
 
     
     const handleMapClick = (e) => {
+        
         const longitude = e.lngLat.lng;
         const latitude = e.lngLat.lat;
         setNewLong(longitude);
         setNewLat(latitude);
         setLong(longitude);
         setLat(latitude);
+        
     }
   
     return (
@@ -61,10 +56,11 @@ function MapBox({setNewLong, setNewLat, notes}) {
         <NavigationControl position='bottom-right' />
         <GeolocateControl trackUserLocation showUserHeading />
         <FullscreenControl />
-        {
-          notes.map(({id, long, lat, remark}) => (
-            <Popup key={id} longitude={long} latitude={lat} closeButton={false} >
+        {notes &&
+          notes.map(({id, long, lat, remark, createdBy}) => (
+            <Popup key={id} longitude={long} latitude={lat} closeButton={false} closeOnClick={false} >
               <p>{remark}</p>
+              <p>{createdBy.split("@")[0]}</p>
             </Popup>
           ))
         }

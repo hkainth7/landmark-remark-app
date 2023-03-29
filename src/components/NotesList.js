@@ -18,7 +18,7 @@ const Title = styled.h2`
 `;
 
 const Input = styled.input`
-    width: 30vw;
+    flex: 1;
     outline: none;
     background-color: white;
     border: 2px solid black;
@@ -66,71 +66,77 @@ const RemarkControls = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
 `;
 
-export default function NotesList({notes}){
+
+
+export default function NotesList({notes, getNotes}){
 
     const [newUpdatedRemark, setNewUpdatedRemark] = useState("");
-    const [filteredData, setFilteredData] = useState([])
-
+    const [query, setQuery] = useState("")
     
+    const getFilteredItems = (query, items) => {
+        if(!query){
+            return items;
+        }
+        return items.filter((item) => item.remark.includes(query));
+    }
 
-    const handleFilter = (e) => {
-        const searchWord = e.target.value;
-        const newFilter = notes.filter((note) => {
-            return note.remark.includes(searchWord);
-        });
-        setFilteredData(newFilter);
-    } 
+    const filteredItems = getFilteredItems(query, notes);
 
     const updateRemark = async (id) => {
-        const noteDoc = doc(db, "notes", `${id}`);
-        const newRemark = {remark: newUpdatedRemark};
-        await updateDoc(noteDoc, newRemark);
+        if(newUpdatedRemark === ""){
+            console.log("edit field must not be empty");
+            return;
+        }else{
+            const noteDoc = doc(db, "notes", `${id}`);
+            const newRemark = {remark: newUpdatedRemark};
+            try {
+                await updateDoc(noteDoc, newRemark);
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+        try {
+            await getNotes();
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     const deleteRemark = async (id) => {
+    
         const noteDoc = doc(db, "notes", `${id}`);
-        await deleteDoc(noteDoc);
+        try {
+            await deleteDoc(noteDoc);
+            await getNotes();
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     
     return(
         <Container>
             <Title>Remarks</Title>
-            <Input type="text" placeholder='Search for remarks' onChange={handleFilter}/>
+            <Input type="text" placeholder='Search for remarks' onChange={(e) => setQuery(e.target.value)}/>
             <ListContainer>    
-                {filteredData.length !== 0 ? filteredData.map(({id, remark, lat, long, createdBy}) => (
-                        <RemarkCard key={id}>
-                            <RemarkContainer>
-                                <Remark>{remark}</Remark>
-                                <Button onClick={() => deleteRemark(id)}>Delete Remark</Button>
-                            </RemarkContainer>
+                {filteredItems?.map(({id, lat, long, createdBy, remark}) => (
+                    <RemarkCard key={id}>
+                        <RemarkContainer>
+                            <Remark>{remark}</Remark>
+                            <Button onClick={() => deleteRemark(id)}>Delete Remark</Button>
+                        </RemarkContainer>
                             <p>Lat: {lat}</p>
                             <p>Long: {long}</p>
                             <p>CreatedBy: {createdBy}</p>
-                            <RemarkControls>
-                                <Input type="text" placeholder="edit remark" onChange={(e) => setNewUpdatedRemark(e.target.value)} />
-                                <Button onClick={() => updateRemark(id, remark)} >Edit Remark</Button>
-                            </RemarkControls>
-                        </RemarkCard>
-                    )) : notes.map(({id, remark, lat, long, createdBy}) => (
-                        <RemarkCard key={id}>
-                            <RemarkContainer>
-                                <Remark>{remark}</Remark>
-                                <Button onClick={() => deleteRemark(id)}>Delete Remark</Button>
-                            </RemarkContainer>
-                            <p>Lat: {lat}</p>
-                            <p>Long: {long}</p>
-                            <p>CreatedBy: {createdBy}</p>
-                            <RemarkControls>
-                                <Input type="text" placeholder="edit remark" onChange={(e) => setNewUpdatedRemark(e.target.value)} />
-                                <Button onClick={() => updateRemark(id, remark)} >Edit Remark</Button>
-                            </RemarkControls>
-                        </RemarkCard>
-                    ))
-                    
-                }
+                        <RemarkControls>
+                            <Input type="text" placeholder="edit remark" onChange={(e) => setNewUpdatedRemark(e.target.value)} />
+                            <Button onClick={() => updateRemark(id)}>Edit Remark</Button>
+                        </RemarkControls>
+                    </RemarkCard>
+                ))}
             </ListContainer>
         </Container>
     )

@@ -27,14 +27,14 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-    width: 75vw;
+    width: 70vw;
     outline: none;
     background-color: white;
     border: 2px solid black;
     padding: 8px;
     border-radius: 4px;
     font-size: 20px;
-    max-width: 500px
+    max-width: 500px;
 `;
 
 const Button = styled.button`
@@ -49,8 +49,16 @@ const Button = styled.button`
     border-radius: 4px;
     transition: all 250ms ease-in-out;
     &:hover{
-        transform: scale(1.1);
+        transform: scale(1.02);
     }
+`;
+
+const ErrorMessage = styled.p`
+    background-color: #F55050;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    border-radius: 4px;
 `;
 
 function LandmarkRemark() {
@@ -59,29 +67,46 @@ function LandmarkRemark() {
     const [newLat, setNewLat] = useState("");
     const [newRemark, setNewRemark] = useState("");
     const [notes, setNotes] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
     const notesCollectionRef = collection(db, "notes");
 
     const {currentUser} = useAuth();
 
+
+    const getNotes = async () => {
+      const data = await getDocs(notesCollectionRef);
+      setNotes(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
+    }
+
     const createNote = async (e) => {
       e.preventDefault();
-      await addDoc(notesCollectionRef, {
-        remark: newRemark,
-        long: newLong,
-        lat: newLat,
-        createdBy: currentUser.email
-      })
+
+      if(newRemark===""){
+        setErrorMessage("Remark field must not be empty");
+      }else{
+        try {
+          await addDoc(notesCollectionRef, {
+            remark: newRemark,
+            long: newLong,
+            lat: newLat,
+            createdBy: currentUser.email
+          })
+          setErrorMessage("");
+          
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      await getNotes();
     }
 
     useEffect(() => {
-      const getNotes = async () => {
-        const data = await getDocs(notesCollectionRef);
-        setNotes(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
-      }
+
+        getNotes()
+        .then(() => setNotes((notes) => [...notes]))
+        .catch((err) => console.log(err))
   
-      getNotes();
-  
-    },[notesCollectionRef]);
+    },[]);
 
   return (
     <Container>
@@ -94,8 +119,8 @@ function LandmarkRemark() {
         <Input type='text'  placeholder="Click on map to get new remark coordinates" value={newLat} onChange={(e) => setNewLat(e.target.value)} />
         <Button>Add remark to location</Button>
       </Form>
-      
-      <NotesList notes={notes} />
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <NotesList notes={notes} getNotes={getNotes} />
     </Container>
   );
 }
