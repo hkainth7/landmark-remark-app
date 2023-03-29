@@ -7,6 +7,11 @@
  1. Clone Repo
  2. In terminal run ``` npm install ``` to install project dependencies 
  3. Run ``` npm start ``` to start the app
+ 
+ logon to test account: 
+ 
+ Email: test@test.com
+ PWD: 123456
 
  # Technologies used:
 
